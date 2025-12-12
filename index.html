@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Job Leelo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet CSS & JS for Real Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              urdu: ['Noto Nastaliq Urdu', 'serif'],
+            },
+            colors: {
+              brand: {
+                50: '#f0f9ff',
+                100: '#e0f2fe',
+                500: '#0ea5e9',
+                600: '#0284c7',
+                900: '#0c4a6e',
+              },
+              accent: {
+                500: '#22c55e',
+              }
+            },
+            boxShadow: {
+              'float': '0 4px 12px rgba(0, 0, 0, 0.15)',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      /* Hide scrollbar */
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      
+      /* Map container */
+      #map-container { height: 100%; width: 100%; z-index: 0; }
+      
+      /* Custom Marker Styles */
+      .custom-marker-label {
+        background-color: white;
+        border-radius: 8px;
+        padding: 6px 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        border: 1px solid #e5e7eb;
+        text-align: center;
+        width: max-content;
+        max-width: 160px;
+        transform: translate(-50%, -10px);
+        font-family: 'Inter', sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        z-index: 100;
+      }
+      .custom-marker-label strong {
+        display: block;
+        font-size: 12px;
+        color: #000;
+      }
+      /* Triangle indicator */
+      .custom-marker-label::after {
+        content: '';
+        position: absolute;
+        bottom: -6px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0; 
+        height: 0; 
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 6px solid white;
+        filter: drop-shadow(0 2px 1px rgba(0,0,0,0.1));
+      }
+
+      .custom-marker-pin {
+        width: 14px;
+        height: 14px;
+        background-color: #0284c7;
+        border: 3px solid white;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        margin: 0 auto;
+        margin-top: 4px;
+        display: none; /* Hidden because we use the bubble tail now */
+      }
+
+      /* User Location Pulse Animation */
+      @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+        70% { box-shadow: 0 0 0 15px rgba(59, 130, 246, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+      }
+      
+      .user-marker {
+        width: 18px;
+        height: 18px;
+        background-color: #2563eb;
+        border: 3px solid white;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      }
+
+      /* Custom Popup Styling */
+      .custom-job-popup .leaflet-popup-content-wrapper {
+        border-radius: 12px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        padding: 0;
+        overflow: hidden;
+      }
+      .custom-job-popup .leaflet-popup-content {
+        margin: 0;
+        width: auto !important;
+        min-width: 160px;
+      }
+      .custom-job-popup .leaflet-popup-tip {
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      }
+      .custom-job-popup .leaflet-popup-close-button {
+        display: none;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.1/",
+    "react": "https://esm.sh/react@^19.2.1",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.1/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.33.0",
+    "lucide-react": "https://esm.sh/lucide-react@^0.559.0"
+  }
+}
+</script>
+</head>
+  <body class="bg-gray-100 text-slate-900 overflow-hidden fixed w-full h-full">
+    <div id="root" class="h-full w-full"></div>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "name": "Job Leelo",
+  "description": "Find jobs near you with real-time map tracking.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
